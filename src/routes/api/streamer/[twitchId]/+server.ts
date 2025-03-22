@@ -20,6 +20,7 @@ export async function GET({ setHeaders, params }) {
 
         if(!isAtLeastFiveMinutesOld)
         {
+            console.log("Data is less than 5 minutes old for", data.twitchId);
             return json(data.character);
         }
 
