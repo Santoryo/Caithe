@@ -1,7 +1,0 @@
-{
-    "name": "caithe",
-    "compatibility_date": "2025-03-22",
-    "assets": {
-      "directory": ".svelte-kit/cloudflare"
-    }
-}
