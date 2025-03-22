@@ -38,7 +38,7 @@ export async function GET({ setHeaders, params }) {
             return json(characterData);
         }
 
-        return json(data.character);
+        // return json(data.character);
     }
     catch (error) {
         console.error(error);
