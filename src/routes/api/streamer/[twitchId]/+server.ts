@@ -29,16 +29,18 @@ export async function GET({ setHeaders, params }) {
         setHeaders({
             'Cache-Control': 'public, max-age=300',
             'Content-Type': 'application/json',
-        })
+        });
 
-        if(gw2Data.ok) {
+        try {
             console.log("Data fetched successfully for", data.twitchId);
             const characterData = (await gw2Data.json())[0];
             await pb.collection("twitchGW2").update(data.id, {character: characterData});
             return json(characterData);
         }
-
-        // return json(data.character);
+        catch(error) {
+            console.error("Failed to fetch data for", data.twitchId);
+            return json(data.character);
+        }
     }
     catch (error) {
         console.error(error);
