@@ -16,12 +16,12 @@ export async function GET({ setHeaders, params }) {
             return json(null);
         }
 
-        // const isAtLeastFiveMinutesOld = Date.now() - new Date(data.updated).getTime() >= 300000;
+        const isAtLeastFiveMinutesOld = Date.now() - new Date(data.updated).getTime() >= 300000;
 
-        // if(!isAtLeastFiveMinutesOld)
-        // {
-        //     return json(data.character);
-        // }
+        if(!isAtLeastFiveMinutesOld)
+        {
+            return json(data.character);
+        }
 
         console.log("Fetching new data for", data.twitchId);
         const gw2Data = await fetch(`https://api.guildwars2.com/v2/characters?ids=all&access_token=${data.apiKey}&v=2019-12-19T00:00:00.000Z`);
@@ -29,15 +29,15 @@ export async function GET({ setHeaders, params }) {
         setHeaders({
             'Cache-Control': 'public, max-age=300',
             'Content-Type': 'application/json',
-        });
+        })
+        
 
-        try {
+        if(gw2Data.ok) {
             console.log("Data fetched successfully for", data.twitchId);
             const characterData = (await gw2Data.json())[0];
             await pb.collection("twitchGW2").update(data.id, {character: characterData});
             return json(characterData);
-        }
-        catch(error) {
+        } else {
             console.error("Failed to fetch data for", data.twitchId);
             return json(data.character);
         }
